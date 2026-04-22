@@ -1,0 +1,7 @@
+# WiFi networks list (one per line)
+# Format: SSID;Password
+# Lines starting with # are ignored
+# The script will try each network in order until one connects
+
+SSID1;PASSWORD1
+SSID2;PASSWORD2

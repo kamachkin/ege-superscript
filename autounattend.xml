@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+	<!--https://schneegans.de/windows/unattend-generator/?LanguageMode=Unattended&UILanguage=ru-RU&Locale=ru-RU&Keyboard=00000419&UseKeyboard2=true&Locale2=en-US&Keyboard2=00000409&GeoLocation=203&ProcessorArchitecture=amd64&BypassRequirementsCheck=true&BypassNetworkCheck=true&ComputerNameMode=Random&CompactOsMode=Default&TimeZoneMode=Implicit&PartitionMode=Custom&DiskpartScript=SELECT+DISK%3D0%0D%0ACLEAN%0D%0ACONVERT+GPT%0D%0ACREATE+PARTITION+EFI+SIZE%3D300%0D%0AFORMAT+QUICK+FS%3DFAT32+LABEL%3D%22System%22%0D%0ACREATE+PARTITION+MSR+SIZE%3D16%0D%0ACREATE+PARTITION+PRIMARY+SIZE%3D122880%0D%0AFORMAT+QUICK+FS%3DNTFS+LABEL%3D%22Windows%22&InstallToMode=Available&DiskAssertionMode=Skip&WindowsEditionMode=Generic&WindowsEdition=pro&UserAccountMode=Unattended&AccountName0=EXAM&AccountDisplayName0=&AccountPassword0=123159&AccountGroup0=Administrators&AccountName1=User&AccountDisplayName1=&AccountPassword1=&AccountGroup1=Users&AccountName2=Admin&AccountDisplayName2=&AccountPassword2=123159&AccountGroup2=Administrators&AutoLogonMode=Own&PasswordExpirationMode=Unlimited&LockoutMode=Default&HideFiles=HiddenSystem&ShowFileExtensions=true&TaskbarSearch=Hide&TaskbarIconsMode=Default&DisableWidgets=true&LeftTaskbar=true&DisableBingResults=true&StartTilesMode=Default&StartPinsMode=Empty&AllowPowerShellScripts=true&PreventDeviceEncryption=true&EffectsMode=Default&DesktopIconsMode=Custom&IconRecycleBin=true&WifiMode=Skip&ExpressSettings=DisableAll&KeysMode=Skip&StickyKeysMode=Default&ColorMode=Default&WallpaperMode=Solid&WallpaperColor=%23008080&Remove3DViewer=true&RemoveBingSearch=true&RemoveClipchamp=true&RemoveCopilot=true&RemoveCortana=true&RemoveDevHome=true&RemoveFamily=true&RemoveFeedbackHub=true&RemoveGetHelp=true&RemoveHandwriting=true&RemoveInternetExplorer=true&RemoveMailCalendar=true&RemoveMaps=true&RemoveMathInputPanel=true&RemoveMediaFeatures=true&RemoveMixedReality=true&RemoveZuneVideo=true&RemoveNews=true&RemoveOffice365=true&RemoveOneDrive=true&RemoveOneNote=true&RemoveOneSync=true&RemoveOpenSSHClient=true&RemoveOutlook=true&RemovePaint3D=true&RemovePeople=true&RemovePowerAutomate=true&RemoveQuickAssist=true&RemoveRecall=true&RemoveRdpClient=true&RemoveSkype=true&RemoveSolitaire=true&RemoveStepsRecorder=true&RemoveStickyNotes=true&RemoveGetStarted=true&RemoveToDo=true&RemoveVoiceRecorder=true&RemoveWallet=true&RemoveWeather=true&RemoveWindowsHello=true&RemoveXboxApps=true&RemoveYourPhone=true&WdacMode=Skip-->
+	<settings pass="offlineServicing"></settings>
+	<settings pass="windowsPE">
+		<component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<SetupUILanguage>
+				<UILanguage>ru-RU</UILanguage>
+			</SetupUILanguage>
+			<InputLocale>0419:00000419;0409:00000409</InputLocale>
+			<SystemLocale>ru-RU</SystemLocale>
+			<UILanguage>ru-RU</UILanguage>
+			<UserLocale>ru-RU</UserLocale>
+		</component>
+		<component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<ImageInstall>
+				<OSImage>
+					<InstallToAvailablePartition>true</InstallToAvailablePartition>
+				</OSImage>
+			</ImageInstall>
+			<UserData>
+				<ProductKey>
+					<Key>VK7JG-NPHTM-C97JM-9MPGT-3V66T</Key>
+					<WillShowUI>OnError</WillShowUI>
+				</ProductKey>
+				<AcceptEula>true</AcceptEula>
+			</UserData>
+			<UseConfigurationSet>true</UseConfigurationSet>
+			<RunSynchronous>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>1</Order>
+					<Path>cmd.exe /c "&gt;&gt;"X:\diskpart.txt" (echo SELECT DISK=0&amp;echo CLEAN&amp;echo CONVERT GPT&amp;echo CREATE PARTITION EFI SIZE=300&amp;echo FORMAT QUICK FS=FAT32 LABEL="System"&amp;echo CREATE PARTITION MSR SIZE=16)"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>2</Order>
+					<Path>cmd.exe /c "&gt;&gt;"X:\diskpart.txt" (echo CREATE PARTITION PRIMARY SIZE=122880&amp;echo FORMAT QUICK FS=NTFS LABEL="Windows")"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>3</Order>
+					<Path>cmd.exe /c "diskpart.exe /s "X:\diskpart.txt" &gt;&gt;"X:\diskpart.log" || ( type "X:\diskpart.log" &amp; echo diskpart encountered an error. &amp; pause &amp; exit /b 1 )"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>4</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v BypassTPMCheck /t REG_DWORD /d 1 /f</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>5</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v BypassSecureBootCheck /t REG_DWORD /d 1 /f</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>6</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v BypassRAMCheck /t REG_DWORD /d 1 /f</Path>
+				</RunSynchronousCommand>
+			</RunSynchronous>
+		</component>
+	</settings>
+	<settings pass="generalize"></settings>
+	<settings pass="specialize">
+		<component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<RunSynchronous>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>1</Order>
+					<Path>powershell.exe -WindowStyle Normal -NoProfile -ExecutionPolicy Bypass -Command "Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\Specialize.ps1' -Raw | Invoke-Expression;"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>2</Order>
+					<Path>reg.exe load "HKU\DefaultUser" "C:\Users\Default\NTUSER.DAT"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>3</Order>
+					<Path>powershell.exe -WindowStyle Normal -NoProfile -ExecutionPolicy Bypass -Command "Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\DefaultUser.ps1' -Raw | Invoke-Expression;"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>4</Order>
+					<Path>reg.exe unload "HKU\DefaultUser"</Path>
+				</RunSynchronousCommand>
+			</RunSynchronous>
+		</component>
+	</settings>
+	<settings pass="auditSystem"></settings>
+	<settings pass="auditUser"></settings>
+	<settings pass="oobeSystem">
+		<component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<InputLocale>0419:00000419;0409:00000409</InputLocale>
+			<SystemLocale>ru-RU</SystemLocale>
+			<UILanguage>ru-RU</UILanguage>
+			<UserLocale>ru-RU</UserLocale>
+		</component>
+		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<UserAccounts>
+				<LocalAccounts>
+					<LocalAccount wcm:action="add">
+						<Name>EXAM</Name>
+						<DisplayName></DisplayName>
+						<Group>Administrators</Group>
+						<Password>
+							<Value>123159</Value>
+							<PlainText>true</PlainText>
+						</Password>
+					</LocalAccount>
+					<LocalAccount wcm:action="add">
+						<Name>User</Name>
+						<DisplayName></DisplayName>
+						<Group>Users</Group>
+						<Password>
+							<Value></Value>
+							<PlainText>true</PlainText>
+						</Password>
+					</LocalAccount>
+				</LocalAccounts>
+			</UserAccounts>
+			<AutoLogon>
+				<Username>EXAM</Username>
+				<Enabled>true</Enabled>
+				<LogonCount>1</LogonCount>
+				<Password>
+					<Value>123159</Value>
+					<PlainText>true</PlainText>
+				</Password>
+			</AutoLogon>
+			<OOBE>
+				<ProtectYourPC>3</ProtectYourPC>
+				<HideEULAPage>true</HideEULAPage>
+				<HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+				<HideOnlineAccountScreens>false</HideOnlineAccountScreens>
+			</OOBE>
+			<FirstLogonCommands>
+				<SynchronousCommand wcm:action="add">
+					<Order>1</Order>
+					<CommandLine>powershell.exe -WindowStyle Normal -NoProfile -ExecutionPolicy Bypass -File "C:\Windows\Setup\Scripts\FirstLogon.ps1"</CommandLine>
+				</SynchronousCommand>
+			</FirstLogonCommands>
+		</component>
+	</settings>
+</unattend>
